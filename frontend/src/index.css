@@ -1,0 +1,158 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Campus Event Management Portal Design System */
+
+@layer base {
+  :root {
+    /* Core Colors - Professional Blues & Modern Accents */
+    --background: 0 0% 100%;
+    --foreground: 215 27% 15%;
+    
+    /* Cards & Surfaces */
+    --card: 0 0% 100%;
+    --card-foreground: 215 27% 15%;
+    --card-hover: 214 100% 97%;
+    
+    /* Primary - Deep Professional Blue */
+    --primary: 214 84% 56%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 214 84% 46%;
+    --primary-light: 214 100% 95%;
+    
+    /* Secondary - Modern Gray */
+    --secondary: 215 16% 47%;
+    --secondary-foreground: 0 0% 100%;
+    --secondary-light: 215 16% 95%;
+    
+    /* Accent Colors */
+    --accent: 142 71% 45%;
+    --accent-foreground: 0 0% 100%;
+    --accent-light: 142 71% 95%;
+    
+    /* Status Colors */
+    --success: 142 71% 45%;
+    --success-foreground: 0 0% 100%;
+    --success-light: 142 71% 95%;
+    
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+    --warning-light: 38 92% 95%;
+    
+    --danger: 0 84% 60%;
+    --danger-foreground: 0 0% 100%;
+    --danger-light: 0 84% 95%;
+    
+    /* Neutral Tones */
+    --muted: 215 16% 96%;
+    --muted-foreground: 215 16% 46%;
+    --border: 215 16% 88%;
+    --input: 215 16% 94%;
+    --ring: 214 84% 56%;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(214, 84%, 56%), hsl(214, 84%, 46%));
+    --gradient-accent: linear-gradient(135deg, hsl(142, 71%, 45%), hsl(142, 71%, 55%));
+    --gradient-hero: linear-gradient(135deg, hsl(214, 84%, 56%) 0%, hsl(142, 71%, 45%) 100%);
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    --shadow-card: 0 4px 6px -1px hsl(214 84% 56% / 0.1);
+    
+    /* Layout */
+    --sidebar-width: 280px;
+    --sidebar-width-collapsed: 80px;
+    --navbar-height: 64px;
+    --radius: 8px;
+    
+    /* Transitions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: all 0.15s ease-out;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 215 27% 12%;
+    --foreground: 0 0% 95%;
+
+    --card: 215 27% 12%;
+    --card-foreground: 0 0% 95%;
+    --card-hover: 215 27% 15%;
+
+    --primary: 214 84% 56%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 214 84% 46%;
+    --primary-light: 214 84% 20%;
+
+    --secondary: 215 16% 25%;
+    --secondary-foreground: 0 0% 95%;
+    --secondary-light: 215 16% 20%;
+
+    --accent: 142 71% 45%;
+    --accent-foreground: 0 0% 100%;
+    --accent-light: 142 71% 20%;
+
+    --success: 142 71% 45%;
+    --success-foreground: 0 0% 100%;
+    --success-light: 142 71% 20%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+    --warning-light: 38 92% 20%;
+
+    --danger: 0 84% 60%;
+    --danger-foreground: 0 0% 100%;
+    --danger-light: 0 84% 20%;
+
+    --muted: 215 16% 18%;
+    --muted-foreground: 215 16% 65%;
+    --border: 215 16% 22%;
+    --input: 215 16% 18%;
+    --ring: 214 84% 56%;
+
+    --sidebar-background: 215 27% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* Custom utilities for the event management portal */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
