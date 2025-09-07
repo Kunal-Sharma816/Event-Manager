@@ -1,202 +1,190 @@
-# EventWeaver Campus Management Portal
+# Campus Event Management Portal
 
-A comprehensive full-stack application for managing campus events with role-based access control.
+A full-stack web application for managing campus events with role-based access control, built with React, Redux, and Node.js.
 
-## 🚀 Quick Start
+## 🎯 Project Overview
 
-### Option 1: Automated Setup (Recommended)
-1. Double-click `start-project.bat` to start both backend and frontend servers
-2. Backend will start on http://localhost:5000
-3. Frontend will start on http://localhost:5173
+This portal enables students, organizers, and administrators to efficiently manage college events including workshops, hackathons, seminars, and fests. Each user role has specific privileges and access levels.
 
-### Option 2: Manual Setup
+## 👥 User Roles & Permissions
 
-#### Backend Setup
-```bash
-cd backend
-npm install
-npm run dev
-```
+| Role | Access Level | Capabilities |
+|------|-------------|-------------|
+| **Admin** | Full Access | Manage users & events, assign roles, approve/reject events |
+| **Organizer** | Event Creator | Create, edit, delete own events |
+| **Student** | Event Participant | Register for events, view event details |
+| **Guest** | View Only | Browse approved public events |
 
-#### Frontend Setup
-```bash
-cd eventweaver-campus
-npm install
-npm run dev
-```
+## ✨ Key Features
+
+### Authentication & Security
+- Custom JWT-based authentication system
+- Secure password hashing with bcryptjs
+- Role-based access control (RBAC)
+- Protected routes and API endpoints
+
+### Event Management
+- Event creation and editing for organizers
+- Event approval/rejection workflow for admins
+- Student event registration system
+- Public event browsing for guests
+
+### Role-Specific Dashboards
+- **Admin Dashboard**: User management, event oversight
+- **Organizer Dashboard**: Personal event management
+- **Student Dashboard**: Registered events overview
+- **Guest Dashboard**: Public events catalog
+
+## 🛠️ Technology Stack
+
+### Frontend
+- **React 18** - Modern UI library
+- **Redux Toolkit** - State management
+- **TailwindCSS** - Utility-first styling
+- **React Router** - Client-side routing
+- **Axios** - HTTP client
+
+### Backend
+- **Node.js** - Runtime environment
+- **Express.js** - Web framework
+- **MongoDB** - NoSQL database
+- **Mongoose** - ODM for MongoDB
+- **JWT** - Token-based authentication
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js (v14 or higher)
+- MongoDB (local or cloud instance)
+- npm or yarn package manager
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd campus-event-management
+   ```
+
+2. **Backend Setup**
+   ```bash
+   cd backend
+   npm install
+   npm run dev
+   ```
+   Backend server starts on `http://localhost:5000`
+
+3. **Frontend Setup**
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
+   Frontend application starts on `http://localhost:3000`
 
 ## 📁 Project Structure
 
 ```
-QpiAi/
-├── backend/                 # Node.js/Express Backend
-│   ├── controllers/         # Route controllers
-│   │   ├── auth/           # Authentication controllers
-│   │   └── events/         # Event controllers
-│   ├── models/             # Database models
-│   ├── routes/             # API routes
-│   ├── middleware/         # Custom middleware
-│   ├── utils/              # Utility functions
-│   ├── config/             # Configuration files
-│   └── server.js           # Main server file
-├── eventweaver-campus/      # React Frontend
+campus-event-management/
+├── backend/
+│   ├── controllers/        # Route handlers
+│   ├── models/            # Database models
+│   ├── routes/            # API routes
+│   ├── middleware/        # Authentication & validation
+│   ├── utils/             # Helper functions
+│   └── server.js          # Entry point
+├── frontend/
 │   ├── src/
-│   │   ├── api/            # API integration
-│   │   ├── components/     # React components
-│   │   ├── pages/          # Page components
-│   │   ├── store/          # Redux store
-│   │   └── utils/          # Utility functions
+│   │   ├── components/    # React components
+│   │   ├── pages/         # Page components
+│   │   ├── store/         # Redux store
+│   │   ├── api/           # API integration
+│   │   └── utils/         # Utility functions
 │   └── package.json
-└── start-project.bat       # One-click startup script
+└── README.md
 ```
 
-## 🔧 Features
+## 🔐 Test Credentials
 
-### Backend Features
-- **JWT Authentication** with secure cookies
-- **Role-Based Access Control (RBAC)**
-- **MongoDB** database with Mongoose ODM
-- **Event Management** with approval workflow
-- **Event Registration** system
-- **CORS** configuration for frontend integration
-- **Rate Limiting** and security middleware
-- **Input Validation** with express-validator
+Use these credentials to test different user roles:
 
-### Frontend Features
-- **React 18** with TypeScript
-- **Redux Toolkit** for state management
-- **React Router** for navigation
-- **Tailwind CSS** for styling
-- **Shadcn/ui** component library
-- **Axios** for API communication
-- **Responsive Design**
+### Admin Account
+- **Email**: admin@campus.edu
+- **Password**: admin123
 
-## 👥 User Roles
+### Organizer Account
+- **Email**: organizer@campus.edu
+- **Password**: organizer123
 
-| Role | Permissions |
-|------|-------------|
-| **Admin** | Manage users, approve/reject events, view all events |
-| **Organizer** | Create, edit, delete own events |
-| **Student** | Register for events, view event details |
-| **Guest** | View approved public events only |
+### Student Account
+- **Email**: student@campus.edu
+- **Password**: student123
 
-## 🛠️ Technology Stack
-
-### Backend
-- Node.js
-- Express.js
-- MongoDB
-- Mongoose
-- JWT (jsonwebtoken)
-- bcryptjs
-- CORS
-- Helmet
-- Express Rate Limit
-
-### Frontend
-- React 18
-- TypeScript
-- Vite
-- Redux Toolkit
-- React Router DOM
-- Axios
-- Tailwind CSS
-- Shadcn/ui
-- Lucide React
+### Guest Account
+- **Email**: guest@campus.edu
+- **Password**: guest123
 
 ## 📡 API Endpoints
 
-### Authentication (`/api/auth`)
-- `POST /register` - Register new user
-- `POST /login` - User login
-- `GET /profile` - Get user profile
-- `POST /logout` - User logout
+### Authentication Routes
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/login` - User login
+- `GET /api/auth/profile` - Get user profile
+- `POST /api/auth/logout` - User logout
 
-### Events (`/api/events`)
-- `GET /public` - Get public events
-- `GET /` - Get all events (Admin)
-- `GET /my-events` - Get user's events (Organizer)
-- `GET /registered` - Get registered events (Student)
-- `POST /` - Create event (Organizer)
-- `PUT /:id` - Update event (Organizer/Admin)
-- `DELETE /:id` - Delete event (Organizer/Admin)
-- `PATCH /:id/approve` - Approve event (Admin)
-- `PATCH /:id/reject` - Reject event (Admin)
-- `POST /:id/register` - Register for event (Student)
-- `DELETE /:id/register` - Unregister from event (Student)
+### Event Management Routes
+- `GET /api/events/public` - Public events (all users)
+- `GET /api/events` - All events (admin only)
+- `POST /api/events` - Create event (organizers)
+- `PUT /api/events/:id` - Update event (organizers/admin)
+- `DELETE /api/events/:id` - Delete event (organizers/admin)
+- `PATCH /api/events/:id/approve` - Approve event (admin)
+- `POST /api/events/:id/register` - Register for event (students)
 
-## 🔐 Environment Variables
+## 🎨 UI/UX Features
 
-### Backend (.env)
-```env
-PORT=5000
-NODE_ENV=development
-MONGODB_URI=mongodb://localhost:27017/eventweaver
-JWT_SECRET=your-super-secret-jwt-key
-JWT_EXPIRE=7d
-JWT_COOKIE_EXPIRE=7
-FRONTEND_URL=http://localhost:5173
-```
+- **Responsive Design** - Works on all device sizes
+- **Modern Interface** - Clean and intuitive user experience
+- **Role-based Navigation** - Dynamic menus based on user permissions
+- **Real-time Updates** - Instant feedback on user actions
+- **Accessibility** - WCAG compliant components
 
-### Frontend (.env)
-```env
-VITE_API_URL=http://localhost:5000/api
-```
+## 🔒 Security Features
+
+- JWT token expiration handling
+- Password encryption and validation
+- Protected API endpoints
+- CORS configuration
+- Input sanitization and validation
+- Rate limiting on sensitive routes
+
+## 📱 Screenshots
+
+*[Add screenshots of different dashboards and key features here]*
 
 ## 🚀 Deployment
 
-### Backend Deployment
-1. Set production environment variables
-2. Use a MongoDB cloud service (MongoDB Atlas)
-3. Deploy to platforms like Heroku, Railway, or DigitalOcean
-
-### Frontend Deployment
-1. Build the project: `npm run build`
-2. Deploy to platforms like Vercel, Netlify, or GitHub Pages
+The application is ready for deployment on platforms like:
+- **Frontend**: Vercel, Netlify, or AWS S3
+- **Backend**: Heroku, Railway, or AWS EC2
+- **Database**: MongoDB Atlas for cloud hosting
 
 ## 🧪 Testing
 
-### Backend Testing
+Run tests for both frontend and backend:
+
 ```bash
-cd backend
-npm test
+# Backend tests
+cd backend && npm test
+
+# Frontend tests
+cd frontend && npm test
 ```
-
-### Frontend Testing
-```bash
-cd eventweaver-campus
-npm run test
-```
-
-## 📝 Development
-
-### Adding New Features
-1. Backend: Add routes in `routes/`, controllers in `controllers/`
-2. Frontend: Add components in `src/components/`, pages in `src/pages/`
-3. Update API integration in `src/api/`
-4. Update Redux store if needed
-
-### Database Schema
-- **Users**: Authentication and profile data
-- **Events**: Event information and metadata
-- **Registrations**: User-event relationships
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
 
 ## 📄 License
 
-MIT License - see LICENSE file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🆘 Support
+## 👨‍💻 Developer
 
-For support, please open an issue in the GitHub repository or contact the development team.
-
----
-
-**Happy Coding! 🎉**
+Built as part of the Full-Stack Internship Assignment demonstrating modern web development practices with React, Node.js, and MongoDB.
