@@ -90,6 +90,12 @@ app.get("/api/health", (req, res) => {
   });
 });
 
+app.get("/", (req, res) => {
+  res.json({ message: "Campus Event Management API is running 🚀" });
+});
+
+app.get("/favicon.ico", (req, res) => res.status(204));
+
 // API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/events", eventRoutes);
