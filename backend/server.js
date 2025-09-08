@@ -33,54 +33,107 @@ try {
 // Create Express app
 const app = express();
 
+// Trust proxy for Render
 app.set("trust proxy", 1);
 
-// Security middleware
-app.use(helmet());
-
-// CORS configuration - FIXED
+// CORS configuration - COMPREHENSIVE FIX
 const allowedOrigins = [
-  "http://localhost:5173", // local dev
-  "http://localhost:5174", // optional second dev port
-  "http://localhost:3000", // alternative local dev port
-  // Fixed Vercel URLs (removed trailing slashes and added all variants)
+  "http://localhost:3000",
+  "http://localhost:5173",
+  "http://localhost:5174",
   "https://event-manager-gules-omega.vercel.app",
   "https://event-manager-git-main-kunal-sharma816s-projects.vercel.app",
   "https://event-manager-qo30vjmai-kunal-sharma816s-projects.vercel.app",
-  // Add any other Vercel deployment URLs you might have
+  // Add pattern for any Vercel preview deployments
+  /^https:\/\/event-manager-.*\.vercel\.app$/,
 ];
 
+// Enhanced CORS options for production
 const corsOptions = {
   origin: function (origin, callback) {
-    // Allow requests with no origin (mobile apps, postman, etc.)
-    if (!origin) return callback(null, true);
+    console.log("🌐 Request Origin:", origin);
 
-    if (allowedOrigins.includes(origin)) {
+    // Allow requests with no origin (mobile apps, etc.)
+    if (!origin) {
+      console.log("✅ No origin - allowing request");
+      return callback(null, true);
+    }
+
+    // Check if origin is in allowed list
+    const isAllowed = allowedOrigins.some((allowedOrigin) => {
+      if (typeof allowedOrigin === "string") {
+        return allowedOrigin === origin;
+      } else if (allowedOrigin instanceof RegExp) {
+        return allowedOrigin.test(origin);
+      }
+      return false;
+    });
+
+    if (isAllowed) {
+      console.log("✅ Origin allowed:", origin);
       callback(null, true);
     } else {
-      console.error(`CORS blocked origin: ${origin}`);
-      callback(new Error("Not allowed by CORS"));
+      console.log("❌ Origin blocked:", origin);
+      console.log("📋 Allowed origins:", allowedOrigins);
+      callback(new Error(`CORS: Origin ${origin} not allowed`));
     }
   },
   credentials: true,
-  optionsSuccessStatus: 200,
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization",
+    "x-csrf-token",
+    "x-requested-with",
+    "Accept",
+    "Accept-Version",
+    "Content-Length",
+    "Content-MD5",
+    "Date",
+    "X-Api-Version",
+  ],
+  exposedHeaders: ["set-cookie"],
+  optionsSuccessStatus: 200,
+  preflightContinue: false,
 };
 
+// Apply CORS before other middleware
 app.use(cors(corsOptions));
 
-// Add preflight handling for all routes
-app.options("*", cors(corsOptions));
+// Handle preflight requests explicitly
+app.options("*", (req, res) => {
+  console.log("🚀 Preflight request from:", req.headers.origin);
+  res.header("Access-Control-Allow-Origin", req.headers.origin);
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET,POST,PUT,DELETE,PATCH,OPTIONS"
+  );
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Content-Type,Authorization,x-csrf-token,x-requested-with,Accept,Accept-Version,Content-Length,Content-MD5,Date,X-Api-Version"
+  );
+  res.sendStatus(200);
+});
 
-// Rate limiting
+// Security middleware (configure after CORS)
+app.use(
+  helmet({
+    crossOriginEmbedderPolicy: false,
+    contentSecurityPolicy: false,
+  })
+);
+
+// Rate limiting - be more lenient for production
 const limiter = rateLimit({
-  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000,
-  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100,
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 200, // Increased limit for production
   message: {
     success: false,
     message: "Too many requests from this IP, please try again later.",
   },
+  standardHeaders: true,
+  legacyHeaders: false,
 });
 app.use("/api/", limiter);
 
@@ -95,9 +148,13 @@ app.use(cookieParser());
 app.use(compression());
 
 // Logging middleware
-if (process.env.NODE_ENV === "development") {
-  app.use(morgan("dev"));
-}
+app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
+
+// Add request logging for debugging
+app.use((req, res, next) => {
+  console.log(`📨 ${req.method} ${req.path} - Origin: ${req.headers.origin}`);
+  next();
+});
 
 // Health check endpoint
 app.get("/api/health", (req, res) => {
@@ -105,16 +162,24 @@ app.get("/api/health", (req, res) => {
     success: true,
     message: "Server is running",
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV,
+    environment: process.env.NODE_ENV || "development",
     database: "mongodb",
+    cors: "enabled",
+    origin: req.headers.origin,
   });
 });
 
+// Root endpoint
 app.get("/", (req, res) => {
-  res.json({ message: "Campus Event Management API is running 🚀" });
+  res.json({
+    message: "Campus Event Management API is running 🚀",
+    cors: "configured",
+    environment: process.env.NODE_ENV || "development",
+  });
 });
 
-app.get("/favicon.ico", (req, res) => res.status(204));
+// Favicon handler
+app.get("/favicon.ico", (req, res) => res.status(204).end());
 
 // API routes
 app.use("/api/auth", authRoutes);
@@ -129,14 +194,25 @@ app.use(errorHandler);
 // Start server
 const PORT = process.env.PORT || 5000;
 
-const server = app.listen(PORT, () => {
-  console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
-  console.log("Allowed CORS origins:", allowedOrigins);
+const server = app.listen(PORT, "0.0.0.0", () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`📍 Environment: ${process.env.NODE_ENV || "development"}`);
+  console.log(`🌐 CORS enabled for origins:`, allowedOrigins);
+  console.log(`🔗 Health check: http://localhost:${PORT}/api/health`);
+});
+
+// Graceful shutdown
+process.on("SIGTERM", () => {
+  console.log("SIGTERM received. Shutting down gracefully...");
+  server.close(() => {
+    console.log("Server closed.");
+    process.exit(0);
+  });
 });
 
 // Handle unhandled promise rejections
-process.on("unhandledRejection", (err, promise) => {
-  console.log(`Error: ${err.message}`);
+process.on("unhandledRejection", (err) => {
+  console.log(`❌ Unhandled Rejection: ${err.message}`);
   server.close(() => {
     process.exit(1);
   });
@@ -144,7 +220,7 @@ process.on("unhandledRejection", (err, promise) => {
 
 // Handle uncaught exceptions
 process.on("uncaughtException", (err) => {
-  console.log(`Error: ${err.message}`);
+  console.log(`❌ Uncaught Exception: ${err.message}`);
   process.exit(1);
 });
 
