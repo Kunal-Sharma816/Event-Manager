@@ -115,7 +115,7 @@ eventSchema.virtual("isFull").get(function () {
   return this.registeredCount >= this.capacity;
 });
 
-// Virtual for checking if registration is open
+// ------------------Virtual for checking if registration is open
 eventSchema.virtual("isRegistrationOpen").get(function () {
   return this.status === "approved" && this.date > new Date();
 });
