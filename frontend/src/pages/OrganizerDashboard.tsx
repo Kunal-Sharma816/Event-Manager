@@ -101,7 +101,7 @@ const OrganizerDashboard = () => {
       if (createEvent.fulfilled.match(resultAction)) {
         console.log('Event created successfully');
         setIsFormOpen(false);
-        // Optionally refetch user events to ensure we have the latest data
+        // refetch user events to ensure we have the latest data
         dispatch(fetchUserEvents());
       } else if (createEvent.rejected.match(resultAction)) {
         console.error('Failed to create event:', resultAction.payload);
