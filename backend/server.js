@@ -31,13 +31,21 @@ try {
 }
 
 // Create Express app
+// Create Express app
 const app = express();
+
+// Trust Render's proxy (important for rate limiting & IPs)
+app.set("trust proxy", 1);
 
 // Security middleware
 app.use(helmet());
 
 // CORS configuration
-const allowedOrigins = ["http://localhost:5173", "http://localhost:5174"];
+const allowedOrigins = [
+  "http://localhost:5173", // local dev
+  "http://localhost:5174", // optional second dev port
+  "https://event-manager-ten-sand.vercel.app", // deployed frontend
+];
 
 const corsOptions = {
   origin: function (origin, callback) {
