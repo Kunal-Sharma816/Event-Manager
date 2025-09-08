@@ -3,9 +3,7 @@ import Registration from "../../models/Registration.js";
 import User from "../../models/User.js";
 import mongoose from "mongoose";
 
-// @desc    Get all events (admin only)
-// @route   GET /api/events
-// @access  Private (Admin)
+// --------------- Get all events (admin only)---------------------
 export const getAllEvents = async (req, res, next) => {
   try {
     const { status, page = 1, limit = 10, sort = "-createdAt" } = req.query;
@@ -42,9 +40,7 @@ export const getAllEvents = async (req, res, next) => {
   }
 };
 
-// @desc    Get public events
-// @route   GET /api/events/public
-// @access  Public
+// --------------------- Get public events --------------------------
 export const getPublicEvents = async (req, res, next) => {
   try {
     const { page = 1, limit = 10, sort = "-createdAt" } = req.query;
@@ -81,9 +77,7 @@ export const getPublicEvents = async (req, res, next) => {
   }
 };
 
-// @desc    Get user's own events (organizer)
-// @route   GET /api/events/my-events
-// @access  Private (Organizer)
+// Get user's own events (organizer)
 export const getUserEvents = async (req, res, next) => {
   try {
     const { status, page = 1, limit = 10, sort = "-createdAt" } = req.query;
@@ -120,9 +114,7 @@ export const getUserEvents = async (req, res, next) => {
   }
 };
 
-// @desc    Get user's registered events (student)
-// @route   GET /api/events/registered
-// @access  Private (Student)
+// Get user's registered events (student)
 export const getRegisteredEvents = async (req, res, next) => {
   try {
     const { page = 1, limit = 10, sort = "-registeredAt" } = req.query;
@@ -168,9 +160,7 @@ export const getRegisteredEvents = async (req, res, next) => {
   }
 };
 
-// @desc    Get single event
-// @route   GET /api/events/:id
-// @access  Public
+//----------------------Get single event
 export const getEvent = async (req, res, next) => {
   try {
     const event = await Event.findById(req.params.id).populate(
@@ -208,9 +198,7 @@ export const getEvent = async (req, res, next) => {
   }
 };
 
-// @desc    Create event
-// @route   POST /api/events
-// @access  Private (Organizer)
+// Create event
 export const createEvent = async (req, res, next) => {
   try {
     const eventData = {
@@ -234,9 +222,7 @@ export const createEvent = async (req, res, next) => {
   }
 };
 
-// @desc    Update event
-// @route   PUT /api/events/:id
-// @access  Private (Organizer/Admin)
+// Update event
 export const updateEvent = async (req, res, next) => {
   try {
     let event = await Event.findById(req.params.id);
@@ -275,9 +261,7 @@ export const updateEvent = async (req, res, next) => {
   }
 };
 
-// @desc    Delete event
-// @route   DELETE /api/events/:id
-// @access  Private (Organizer/Admin)
+// Delete event
 export const deleteEvent = async (req, res, next) => {
   try {
     const event = await Event.findById(req.params.id);
@@ -316,8 +300,6 @@ export const deleteEvent = async (req, res, next) => {
 };
 
 // @desc    Approve event (admin only)
-// @route   PATCH /api/events/:id/approve
-// @access  Private (Admin)
 export const approveEvent = async (req, res, next) => {
   try {
     const event = await Event.findByIdAndUpdate(
@@ -343,9 +325,7 @@ export const approveEvent = async (req, res, next) => {
   }
 };
 
-// @desc    Reject event (admin only)
-// @route   PATCH /api/events/:id/reject
-// @access  Private (Admin)
+// Reject event (admin only)
 export const rejectEvent = async (req, res, next) => {
   try {
     const event = await Event.findByIdAndUpdate(
@@ -371,12 +351,7 @@ export const rejectEvent = async (req, res, next) => {
   }
 };
 
-// @desc    Register for event
-// @route   POST /api/events/:id/register
-// @access  Private (Student)
-// @desc    Register for event
-// @route   POST /api/events/:id/register
-// @access  Private (Student)
+// --------------------------Register for event-----------------------------------
 export const registerForEvent = async (req, res, next) => {
   console.log("req recieved , for events register");
   try {
@@ -423,7 +398,7 @@ export const registerForEvent = async (req, res, next) => {
       });
     }
 
-    // Create registration
+    // -----------------------------Create registration
     await Registration.create({
       userId,
       eventId,
@@ -435,7 +410,7 @@ export const registerForEvent = async (req, res, next) => {
     event.registeredCount += 1;
     await event.save();
 
-    // ✅ Return updated event along with success message
+    // Return updated event along with success message
     res.status(201).json({
       success: true,
       message: "Successfully registered for event",
@@ -446,9 +421,7 @@ export const registerForEvent = async (req, res, next) => {
   }
 };
 
-// @desc    Unregister from event
-// @route   DELETE /api/events/:id/register
-// @access  Private (Student)
+// ------------------------------Unregister from event------------------------------------
 export const unregisterFromEvent = async (req, res, next) => {
   try {
     const eventId = req.params.id;

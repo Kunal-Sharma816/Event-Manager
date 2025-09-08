@@ -65,12 +65,11 @@ export const extractToken = (req) => {
     token = authHeader.split(" ")[1];
   }
 
-  // Fallback to cookies if no Authorization header
   if (!token && req.cookies && req.cookies.token) {
     token = req.cookies.token;
   }
 
-  // Log for debugging (remove in production)
+  // Log for debugging 
   if (process.env.NODE_ENV === 'development') {
     console.log('Token extraction:', {
       authHeader: !!authHeader,
@@ -83,7 +82,7 @@ export const extractToken = (req) => {
   return token;
 };
 
-// Decode token without verification (useful for debugging)
+// Decode token without verification 
 export const decodeToken = (token) => {
   try {
     return jwt.decode(token);

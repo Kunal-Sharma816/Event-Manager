@@ -2,9 +2,7 @@ import inMemoryDB from "../../models/InMemoryDB.js";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../../utils/jwt.js";
 
-// @desc    Register user
-// @route   POST /api/auth/register
-// @access  Public
+// Register user
 export const register = async (req, res, next) => {
   try {
     const { name, email, password, role = "student" } = req.body;
@@ -61,9 +59,7 @@ export const register = async (req, res, next) => {
   }
 };
 
-// @desc    Login user
-// @route   POST /api/auth/login
-// @access  Public
+// Login user
 export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -127,9 +123,7 @@ export const login = async (req, res, next) => {
   }
 };
 
-// @desc    Get current user profile
-// @route   GET /api/auth/profile
-// @access  Private
+//Get current user profile
 export const getProfile = async (req, res, next) => {
   try {
     const user = inMemoryDB.findUserById(req.user.id);
@@ -158,9 +152,7 @@ export const getProfile = async (req, res, next) => {
   }
 };
 
-// @desc    Logout user
-// @route   POST /api/auth/logout
-// @access  Private
+// Logout user
 export const logout = async (req, res, next) => {
   try {
     // Clear cookie

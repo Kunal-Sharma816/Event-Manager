@@ -31,10 +31,8 @@ try {
 }
 
 // Create Express app
-// Create Express app
 const app = express();
 
-// Trust Render's proxy (important for rate limiting & IPs)
 app.set("trust proxy", 1);
 
 // Security middleware

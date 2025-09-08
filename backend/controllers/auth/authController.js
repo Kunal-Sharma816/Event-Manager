@@ -2,9 +2,7 @@ import User from "../../models/User.js";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../../utils/jwt.js";
 
-// @desc    Register user
-// @route   POST /api/auth/register
-// @access  Public
+// Register user
 export const register = async (req, res, next) => {
   try {
     const { name, email, password, role = "student" } = req.body;
@@ -65,9 +63,8 @@ export const register = async (req, res, next) => {
   }
 };
 
-// @desc    Login user
-// @route   POST /api/auth/login
-// @access  Public
+// Login user
+
 export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -149,9 +146,7 @@ export const login = async (req, res, next) => {
   }
 };
 
-// @desc    Get current user profile
-// @route   GET /api/auth/profile
-// @access  Private
+// Get current user profile
 export const getProfile = async (req, res, next) => {
   try {
     console.log('Profile request from user:', req.user?.id);
@@ -183,9 +178,7 @@ export const getProfile = async (req, res, next) => {
   }
 };
 
-// @desc    Logout user
-// @route   POST /api/auth/logout
-// @access  Private
+// Logout user
 export const logout = async (req, res, next) => {
   try {
     // Clear cookie
@@ -205,9 +198,7 @@ export const logout = async (req, res, next) => {
   }
 };
 
-// @desc    Update user profile
-// @route   PUT /api/auth/profile
-// @access  Private
+// Update user profile
 export const updateProfile = async (req, res, next) => {
   try {
     const { name, email } = req.body;
@@ -253,9 +244,7 @@ export const updateProfile = async (req, res, next) => {
   }
 };
 
-// @desc    Change password
-// @route   PUT /api/auth/change-password
-// @access  Private
+// Change password
 export const changePassword = async (req, res, next) => {
   try {
     const { currentPassword, newPassword } = req.body;
@@ -292,9 +281,7 @@ export const changePassword = async (req, res, next) => {
   }
 };
 
-// @desc    Debug token endpoint
-// @route   GET /api/auth/debug-token
-// @access  Public (for debugging only)
+//Debug token endpoint
 export const debugToken = async (req, res) => {
   if (process.env.NODE_ENV !== 'development') {
     return res.status(404).json({ message: 'Not found' });

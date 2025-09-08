@@ -32,7 +32,7 @@ router.get("/public", getPublicEvents);
 // Protected routes
 router.use(protect);
 
-// SPECIFIC ROUTES MUST COME FIRST (before any dynamic routes)
+// SPECIFIC ROUTES MUST COME FIRST 
 router.get("/my-events", requireOrganizer, getUserEvents);
 router.get("/registered", requireStudent, getRegisteredEvents);
 
