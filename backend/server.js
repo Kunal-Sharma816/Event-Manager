@@ -42,7 +42,7 @@ app.use(helmet());
 const allowedOrigins = [
   "http://localhost:5173", // local dev
   "http://localhost:5174", // optional second dev port
-  "https://event-manager-ten-sand.vercel.app", // deployed frontend
+  "https://event-manager-gules-omega.vercel.app/" // deployed fronted
 ];
 
 const corsOptions = {
